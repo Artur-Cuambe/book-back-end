@@ -8,6 +8,6 @@ async function bootstrap() {
   app.enableCors();
   // Servir arquivos estáticos (EPUBs) da pasta /files
   app.use('/files', express.static(join(__dirname, '..', 'files')));
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
