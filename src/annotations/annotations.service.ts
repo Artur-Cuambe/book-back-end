@@ -6,8 +6,8 @@ export interface Annotation {
   cfiRange: string; // trecho selecionado
   text: string; // anotação opcional
   type: string; // "highlight" | "underline"
-  markedText: string; 
-
+  markedText: string;
+  userId: number;
 }
 
 @Injectable()
@@ -15,8 +15,11 @@ export class AnnotationsService {
   private annotations: Annotation[] = [];
   private idCounter = 1;
 
-  findByBook(bookId: number) {
-    return this.annotations.filter((a) => a.bookId === bookId);
+  findByBook(bookId: number,userId: number) {
+    // console.log("params",{bookId, userId});
+    // console.log("anotations",this.annotations);
+    
+    return this.annotations.filter((a) => a.bookId === bookId && a.userId == userId);
   }
 
   create(
@@ -24,7 +27,8 @@ export class AnnotationsService {
     cfiRange: string,
     text: string,
     type: string,
-    markedText: string
+    markedText: string,
+    userId: number
   ) {
     const annotation: Annotation = {
       id: this.idCounter++,
@@ -32,7 +36,8 @@ export class AnnotationsService {
       cfiRange,
       text,
       type,
-      markedText
+      markedText,
+      userId
     };
     this.annotations.push(annotation);
     return annotation;

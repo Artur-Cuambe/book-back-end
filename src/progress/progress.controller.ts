@@ -1,17 +1,22 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
-import { ProgressService } from './progress.service';
+import { Controller, Get, Post, Param, Body, Query } from "@nestjs/common";
+import { ProgressService } from "./progress.service";
 
-@Controller('progress')
+@Controller("progress")
 export class ProgressController {
   constructor(private readonly progressService: ProgressService) {}
 
-  @Post(':bookId')
-  saveProgress(@Param('bookId') bookId: string, @Body() body: { cfi: string }) {
-    return this.progressService.saveProgress(+bookId, body.cfi);
+  @Post(":bookId")
+  saveProgress(
+    @Param("bookId") bookId: string,
+    @Body() body: { cfi: string; userId: string }
+  ) {
+    const userId = parseInt(body.userId)
+    return this.progressService.saveProgress(+bookId, body.cfi, userId);
   }
 
-  @Get(':bookId')
-  getProgress(@Param('bookId') bookId: string) {
-    return this.progressService.getProgress(+bookId);
+  @Get()
+  getProgress(@Query() options: { bookId: string; userId: string }) {
+    const userId = parseInt(options.userId)
+    return this.progressService.getProgress(+options.bookId, userId);
   }
 }
